@@ -11,8 +11,9 @@ namespace CMF
     {
         public abstract float GetHorizontalMovementInput();
         public abstract float GetVerticalMovementInput();
-
         public abstract bool IsJumpKeyPressed();
         public abstract bool IsSkiKeyPressed();
+        public abstract bool IsShootButtonPressed();
+        public abstract bool IsReloadKeyPressed();
     }
 }

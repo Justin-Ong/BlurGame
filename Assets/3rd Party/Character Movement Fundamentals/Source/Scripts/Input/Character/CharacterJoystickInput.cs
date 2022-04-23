@@ -56,6 +56,16 @@ namespace CMF
 			return Input.GetKey(jumpKey);
 		}
 
+        public override bool IsReloadKeyPressed()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool IsShootButtonPressed()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override bool IsSkiKeyPressed()
         {
             throw new System.NotImplementedException();

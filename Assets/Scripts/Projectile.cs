@@ -63,7 +63,7 @@ public class Projectile : PooledObject
     private IEnumerator ExplosionRoutine()
     {
         explosionPrefab.SetActive(true);
-        yield return new WaitForEndOfFrame();
+        yield return null;
         explosionPrefab.SetActive(false);
     }
 }

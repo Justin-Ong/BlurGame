@@ -11,6 +11,8 @@ namespace CMF
 		public string verticalInputAxis = "Vertical";
 		public KeyCode jumpKey = KeyCode.Space;
 		public KeyCode skiKey = KeyCode.LeftShift;
+		public KeyCode shootButton = KeyCode.Mouse0;
+		public KeyCode reloadKey = KeyCode.R;
 
 		//If this is enabled, Unity's internal input smoothing is bypassed;
 		public bool useRawInput = true;
@@ -39,6 +41,15 @@ namespace CMF
 		public override bool IsSkiKeyPressed()
 		{
 			return Input.GetKey(skiKey);
+		}
+
+		public override bool IsShootButtonPressed() {
+			return Input.GetKey(shootButton);
+		}
+
+		public override bool IsReloadKeyPressed()
+		{
+			return Input.GetKey(reloadKey);
 		}
     }
 }

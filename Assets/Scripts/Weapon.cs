@@ -11,6 +11,8 @@ public class Weapon : MonoBehaviour
     public float projectileDamage;
     public float projectileLifetime = 1f;
     public float inheritanceModifier = 1f;
+    public int magSize = 1;
+    public float reloadTime = 1f;
     public Transform visualTransform;
     public LayerMask mask;
     public bool isAffectedByGravity;
@@ -18,7 +20,8 @@ public class Weapon : MonoBehaviour
     private Rigidbody playerRb;
     private ObjectPool<Projectile> projectilePool;
     private Camera mainCamera;
-
+    private int currMagSize;
+    private bool isReloading;
 
     private void Awake()
     {
@@ -32,6 +35,9 @@ public class Weapon : MonoBehaviour
         }
 
         Assert.IsNotNull(projectilePool);
+
+        currMagSize = magSize;
+        isReloading = false;
     }
 
     void Update()
@@ -40,21 +46,58 @@ public class Weapon : MonoBehaviour
         mousePos.z = transform.position.z - mainCamera.transform.position.z;
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         transform.LookAt(worldPos);
+        HandleShootButtonInput();
+        HandleReloadKeyInput();
+    }
 
-        if (Input.GetMouseButtonDown(0)) {
+    private void HandleShootButtonInput()
+    {
+        if (currMagSize > 0)
+        {
             Shoot();
+        }
+        else if (!isReloading)
+        {
+            Reload();
+        }
+    }
+
+    private void HandleReloadKeyInput()
+    {
+        if (!isReloading && currMagSize < magSize)
+        {
+            Reload();
         }
     }
 
     private void Shoot()
     {
+        currMagSize--;
         Projectile instance;
-        if (projectilePool.GetObject(0, out instance)) {
-            instance.transform.position = visualTransform.position;
-            instance.transform.rotation = visualTransform.rotation;
-            instance.Rb.velocity = transform.forward * projectileSpeed;
-            instance.Rb.velocity += playerRb.velocity * inheritanceModifier;
-            instance.gameObject.SetActive(true);
+        projectilePool.GetObject(0, out instance);
+        instance.transform.position = visualTransform.position;
+        instance.transform.rotation = visualTransform.rotation;
+        instance.Rb.velocity = transform.forward * projectileSpeed;
+        instance.Rb.velocity += playerRb.velocity * inheritanceModifier;
+        instance.gameObject.SetActive(true);
+
+        if (currMagSize <= 0)
+        {
+            Reload();
         }
+    }
+
+    private void Reload()
+    {
+        isReloading = true;
+        StartCoroutine(ReloadRoutine());
+    }
+
+    private IEnumerator ReloadRoutine()
+    {
+        yield return new WaitForSeconds(reloadTime);
+        currMagSize = magSize;
+        isReloading = false;
+        yield return null;
     }
 }
