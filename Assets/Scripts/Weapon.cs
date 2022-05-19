@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Impact.Utility.ObjectPool;
+using CMF;
 
 public class Weapon : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Weapon : MonoBehaviour
     public float projectileLifetime = 1f;
     public float inheritanceModifier = 1f;
     public int magSize = 1;
+    public float cooldownTime = 1f;
     public float reloadTime = 1f;
     public Transform visualTransform;
     public LayerMask mask;
@@ -21,6 +23,7 @@ public class Weapon : MonoBehaviour
     private ObjectPool<Projectile> projectilePool;
     private Camera mainCamera;
     private int currMagSize;
+    private bool isCoolingDown;
     private bool isReloading;
 
     private void Awake()
@@ -46,17 +49,23 @@ public class Weapon : MonoBehaviour
         mousePos.z = transform.position.z - mainCamera.transform.position.z;
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         transform.LookAt(worldPos);
-        HandleShootButtonInput();
-        HandleReloadKeyInput();
+        if (CharacterKeyboardInput.instance.IsShootButtonPressed())
+        {
+            HandleShootButtonInput();
+        }
+        if (CharacterKeyboardInput.instance.IsReloadKeyPressed())
+        {
+            HandleReloadKeyInput();
+        }
     }
 
     private void HandleShootButtonInput()
     {
-        if (currMagSize > 0)
+        if (currMagSize > 0 && !isReloading)
         {
             Shoot();
         }
-        else if (!isReloading)
+        else if (currMagSize <= 0 && !isReloading)
         {
             Reload();
         }
@@ -72,14 +81,17 @@ public class Weapon : MonoBehaviour
 
     private void Shoot()
     {
-        currMagSize--;
-        Projectile instance;
-        projectilePool.GetObject(0, out instance);
-        instance.transform.position = visualTransform.position;
-        instance.transform.rotation = visualTransform.rotation;
-        instance.Rb.velocity = transform.forward * projectileSpeed;
-        instance.Rb.velocity += playerRb.velocity * inheritanceModifier;
-        instance.gameObject.SetActive(true);
+        if (!isCoolingDown) {
+            currMagSize--;
+            Projectile instance;
+            projectilePool.GetObject(0, out instance);
+            instance.transform.position = visualTransform.position;
+            instance.transform.rotation = visualTransform.rotation;
+            instance.Rb.velocity = transform.forward * projectileSpeed;
+            instance.Rb.velocity += playerRb.velocity * inheritanceModifier;
+            instance.gameObject.SetActive(true);
+            StartCooldown();
+        }
 
         if (currMagSize <= 0)
         {
@@ -98,6 +110,19 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         currMagSize = magSize;
         isReloading = false;
+        yield return null;
+    }
+
+    private void StartCooldown()
+    {
+        isCoolingDown = true;
+        StartCoroutine(CooldownRoutine());
+    }
+
+    private IEnumerator CooldownRoutine()
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        isCoolingDown = false;
         yield return null;
     }
 }

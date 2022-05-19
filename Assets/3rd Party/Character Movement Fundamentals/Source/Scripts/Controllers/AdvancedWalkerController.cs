@@ -195,9 +195,11 @@ namespace CMF
 			//Reset jump key booleans;
 			jumpKeyWasLetGo = false;
 			jumpKeyWasPressed = false;
+			skiKeyWasLetGo = false;
+			skiKeyWasPressed = false;
 
 			//Reset ceiling detector, if one is attached to this gameobject;
-			if(ceilingDetector != null)
+			if (ceilingDetector != null)
 				ceilingDetector.ResetFlags();
 		}
 
