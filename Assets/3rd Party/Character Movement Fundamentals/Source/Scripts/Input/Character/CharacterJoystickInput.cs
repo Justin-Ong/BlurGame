@@ -51,7 +51,17 @@ namespace CMF
 			return _verticalInput;
 		}
 
-		public override bool IsJumpKeyPressed()
+        public override bool IsFlagThrowKeyPressed()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool IsInteractKeyPressed()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override bool IsJumpKeyPressed()
 		{
 			return Input.GetKey(jumpKey);
 		}

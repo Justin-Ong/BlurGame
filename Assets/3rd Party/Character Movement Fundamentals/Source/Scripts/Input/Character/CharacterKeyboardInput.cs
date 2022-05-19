@@ -15,6 +15,8 @@ namespace CMF
 		public KeyCode skiKey = KeyCode.LeftShift;
 		public KeyCode shootButton = KeyCode.Mouse0;
 		public KeyCode reloadKey = KeyCode.R;
+		public KeyCode interactKey = KeyCode.F;
+		public KeyCode flagThrowKey = KeyCode.X;
 
 		//If this is enabled, Unity's internal input smoothing is bypassed;
 		public bool useRawInput = true;
@@ -60,6 +62,15 @@ namespace CMF
 		public override bool IsReloadKeyPressed()
 		{
 			return Input.GetKey(reloadKey);
+		}
+		
+		public override bool IsInteractKeyPressed() {
+			return Input.GetKey(interactKey);
+		}
+
+		public override bool IsFlagThrowKeyPressed()
+		{
+			return Input.GetKey(flagThrowKey);
 		}
     }
 }

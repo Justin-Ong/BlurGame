@@ -15,5 +15,7 @@ namespace CMF
         public abstract bool IsSkiKeyPressed();
         public abstract bool IsShootButtonPressed();
         public abstract bool IsReloadKeyPressed();
+        public abstract bool IsInteractKeyPressed();
+        public abstract bool IsFlagThrowKeyPressed();
     }
 }
