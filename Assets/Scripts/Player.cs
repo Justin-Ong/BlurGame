@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
 
     public bool holdingFlag => heldFlag != null;
 
+    public float Speed => rb.velocity.magnitude;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
