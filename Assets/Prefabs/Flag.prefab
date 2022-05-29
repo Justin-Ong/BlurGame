@@ -111,10 +111,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 10
-  team: 
-  flagTrigger: {fileID: 1978673740411132774}
+  isThrowable: 1
+  trigger: {fileID: 1978673740411132774}
   floorCollider: {fileID: 1308894756514902265}
   cooldownTime: 0.1
+  team: 
 --- !u!54 &1478722516796179131
 Rigidbody:
   m_ObjectHideFlags: 0

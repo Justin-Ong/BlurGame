@@ -19,14 +19,18 @@ public class Weapon : MonoBehaviour
     public LayerMask mask;
     public bool isAffectedByGravity;
 
+    [SerializeField]
+    private Renderer[] renderers;
+
     private Rigidbody playerRb;
-    private ObjectPool<Projectile> projectilePool;
+    private ProjectilePool projectilePool;
     private Camera mainCamera;
     private int currMagSize;
     private bool isCoolingDown;
-    private bool isReloading;
+    private bool isReloading = false;
+    private bool isHidden = false;
 
-    private void Awake()
+    private void Start()
     {
         mainCamera = Camera.main;
 
@@ -34,30 +38,32 @@ public class Weapon : MonoBehaviour
 
         if (projectilePool == null)
         {
-            projectilePool = GetComponent<ObjectPool<Projectile>>();
+            projectilePool = GetComponent<ProjectilePool>();
         }
-
         Assert.IsNotNull(projectilePool);
 
         currMagSize = magSize;
-        isReloading = false;
     }
 
-    void Update()
+    private void Update()
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = transform.position.z - mainCamera.transform.position.z;
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         transform.LookAt(worldPos);
-        if (CharacterKeyboardInput.instance.IsShootButtonPressed())
+        if (!isHidden)
         {
-            HandleShootButtonInput();
-        }
-        if (CharacterKeyboardInput.instance.IsReloadKeyPressed())
-        {
-            HandleReloadKeyInput();
+            if (CharacterKeyboardInput.instance.IsShootButtonPressed())
+            {
+                HandleShootButtonInput();
+            }
+            if (CharacterKeyboardInput.instance.IsReloadKeyPressed())
+            {
+                HandleReloadKeyInput();
+            }
         }
     }
+
 
     private void HandleShootButtonInput()
     {
@@ -124,5 +130,22 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(cooldownTime);
         isCoolingDown = false;
         yield return null;
+    }
+
+    public void Hide()
+    {
+        foreach (Renderer rend in renderers) {
+            rend.enabled = false;
+        }
+        isHidden = true;
+    }
+
+    public void Show()
+    {
+        foreach (Renderer rend in renderers)
+        {
+            rend.enabled = true;
+        }
+        isHidden = false;
     }
 }

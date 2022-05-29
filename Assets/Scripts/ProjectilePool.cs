@@ -12,11 +12,15 @@ public class ProjectilePool : ObjectPool<Projectile>
     private Weapon weapon;
     private Collider parentCollider;
 
-    private void Awake()
+    private void Start()
+    {
+
+    }
+
+    public void Init()
     {
         weapon = GetComponent<Weapon>();
         parentCollider = GetComponentInParent<Collider>();
-
         Template = template;
         Initialize(_poolSize, _fallbackMode);
     }
