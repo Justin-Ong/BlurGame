@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9560c8ee8d6e1934da43a9fb1117755b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolSize: 30
+  _poolSize: 5
   _fallbackMode: 0
   template: {fileID: 5610213502063307622, guid: cd61cdb7f0d197f4090772f390121cfa, type: 3}
 --- !u!114 &3118169674868028652

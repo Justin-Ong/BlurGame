@@ -78,7 +78,7 @@ public class Turret : MonoBehaviour
         {
             weapon.transform.LookAt(target);
             if (!weapon.IsBusy) {
-                weapon.Shoot();
+                weapon.AIShoot();
             }
         }
     }

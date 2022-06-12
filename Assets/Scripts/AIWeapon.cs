@@ -5,28 +5,11 @@ using UnityEngine.Assertions;
 using Impact.Utility.ObjectPool;
 using CMF;
 
-public class AIWeapon : MonoBehaviour
+public class AIWeapon : Weapon
 {
-    public string weaponName;
-    public float projectileSpeed;
-    public float projectileDamage;
-    public float projectileLifetime = 1f;
-    public float inheritanceModifier = 1f;
-    public int magSize = 1;
-    public float cooldownTime = 1f;
-    public float reloadTime = 1f;
-    public Transform visualTransform;
-    public LayerMask mask;
-    public bool isAffectedByGravity;
-
-    private ProjectilePool projectilePool;
-    private int currMagSize;
-    private bool isCoolingDown = false;
-    private bool isReloading = false;
-
     public bool IsBusy => isCoolingDown || isReloading;
 
-    private void Start()
+    protected override void Start()
     {
         if (projectilePool == null)
         {
@@ -37,7 +20,12 @@ public class AIWeapon : MonoBehaviour
         currMagSize = magSize;
     }
 
-    public void Shoot()
+    protected override void Update()
+    {
+        // do nothing
+    }
+
+    protected override void Shoot()
     {
         if (!isCoolingDown)
         {
@@ -57,30 +45,8 @@ public class AIWeapon : MonoBehaviour
         }
     }
 
-    private void Reload()
+    public void AIShoot()
     {
-        isReloading = true;
-        StartCoroutine(ReloadRoutine());
-    }
-
-    private IEnumerator ReloadRoutine()
-    {
-        yield return new WaitForSeconds(reloadTime);
-        currMagSize = magSize;
-        isReloading = false;
-        yield return null;
-    }
-
-    private void StartCooldown()
-    {
-        isCoolingDown = true;
-        StartCoroutine(CooldownRoutine());
-    }
-
-    private IEnumerator CooldownRoutine()
-    {
-        yield return new WaitForSeconds(cooldownTime);
-        isCoolingDown = false;
-        yield return null;
+        Shoot();
     }
 }

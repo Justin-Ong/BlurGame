@@ -20,17 +20,17 @@ public class Weapon : MonoBehaviour
     public bool isAffectedByGravity = false;
 
     [SerializeField]
-    private Renderer[] renderers;
+    protected Renderer[] renderers;
 
-    private Rigidbody playerRb;
-    private ProjectilePool projectilePool;
-    private Camera mainCamera;
-    private int currMagSize;
-    private bool isCoolingDown;
-    private bool isReloading = false;
-    private bool isHidden = false;
+    protected Rigidbody playerRb;
+    protected ProjectilePool projectilePool;
+    protected Camera mainCamera;
+    protected int currMagSize;
+    protected bool isCoolingDown;
+    protected bool isReloading = false;
+    protected bool isHidden = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         mainCamera = Camera.main;
 
@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour
         currMagSize = magSize;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = transform.position.z - mainCamera.transform.position.z;
@@ -65,7 +65,7 @@ public class Weapon : MonoBehaviour
     }
 
 
-    private void HandleShootButtonInput()
+    protected void HandleShootButtonInput()
     {
         if (currMagSize > 0 && !isReloading)
         {
@@ -77,7 +77,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void HandleReloadKeyInput()
+    protected void HandleReloadKeyInput()
     {
         if (!isReloading && currMagSize < magSize)
         {
@@ -85,7 +85,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void Shoot()
+    protected virtual void Shoot()
     {
         if (!isCoolingDown) {
             currMagSize--;
@@ -105,13 +105,13 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void Reload()
+    protected void Reload()
     {
         isReloading = true;
         StartCoroutine(ReloadRoutine());
     }
 
-    private IEnumerator ReloadRoutine()
+    protected IEnumerator ReloadRoutine()
     {
         yield return new WaitForSeconds(reloadTime);
         currMagSize = magSize;
@@ -119,13 +119,13 @@ public class Weapon : MonoBehaviour
         yield return null;
     }
 
-    private void StartCooldown()
+    protected void StartCooldown()
     {
         isCoolingDown = true;
         StartCoroutine(CooldownRoutine());
     }
 
-    private IEnumerator CooldownRoutine()
+    protected IEnumerator CooldownRoutine()
     {
         yield return new WaitForSeconds(cooldownTime);
         isCoolingDown = false;
