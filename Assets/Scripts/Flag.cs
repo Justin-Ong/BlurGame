@@ -14,7 +14,7 @@ public class Flag : Grabbable
     {
         base.OnTriggerEnter(other);
 
-        if (other.gameObject.layer == 6 && !isHeld && !isCoolingDown)
+        if (other.gameObject.layer == 6 && isHeld && !isCoolingDown)
         {
             holdingPlayer.holdFlag(this);
             team = holdingPlayer.Team;
