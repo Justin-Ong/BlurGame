@@ -21,11 +21,11 @@ namespace CMF
 		bool jumpKeyWasLetGo = false;
 		bool jumpKeyIsPressed = false;
 		
-		//Ski key variables;
-        bool isSkiing = false;
-        bool skiKeyWasPressed = false;
-		bool skiKeyWasLetGo = false;
-		bool skiKeyIsPressed = false;
+		//Hover key variables;
+        bool isHovering = false;
+        bool hoverKeyWasPressed = false;
+		bool hoverKeyWasLetGo = false;
+		bool hoverKeyIsPressed = false;
 
 		//Movement speed;
 		public float movementSpeed = 7f;
@@ -106,7 +106,7 @@ namespace CMF
 		void Update()
 		{
 			HandleJumpKeyInput();
-			HandleSkiKeyInput();
+			HandleHoverKeyInput();
 		}
 
         //Handle jump booleans for later use in FixedUpdate;
@@ -126,20 +126,20 @@ namespace CMF
             jumpKeyIsPressed = _newJumpKeyPressedState;
         }
 		
-		//Handle ski booleans for later use in FixedUpdate;
-        void HandleSkiKeyInput()
+		//Handle hover booleans for later use in FixedUpdate;
+        void HandleHoverKeyInput()
         {
-            bool _newSkiKeyPressedState = IsSkiKeyPressed();
+            bool _newHoverKeyPressedState = IsHoverKeyPressed();
 
-            if (skiKeyIsPressed == false && _newSkiKeyPressedState == true)
-				skiKeyIsPressed = true;
+            if (hoverKeyIsPressed == false && _newHoverKeyPressedState == true)
+				hoverKeyIsPressed = true;
 
-            if (skiKeyIsPressed == true && _newSkiKeyPressedState == false)
+            if (hoverKeyIsPressed == true && _newHoverKeyPressedState == false)
             {
-                skiKeyWasLetGo = true;
+                hoverKeyWasLetGo = true;
             }
 
-			skiKeyIsPressed = _newSkiKeyPressedState;
+			hoverKeyIsPressed = _newHoverKeyPressedState;
         }
 
         void FixedUpdate()
@@ -164,7 +164,7 @@ namespace CMF
 			HandleJumping();
 
 			//Check if the player is skiing;
-			HandleSkiing();
+			HandleHovering();
 
 			//Calculate movement velocity;
 			Vector3 _velocity = Vector3.zero;
@@ -192,11 +192,11 @@ namespace CMF
 			//Save controller movement velocity;
 			savedMovementVelocity = CalculateMovementVelocity();
 
-			//Reset jump key booleans;
+			//Reset jump and hover key booleans;
 			jumpKeyWasLetGo = false;
 			jumpKeyWasPressed = false;
-			skiKeyWasLetGo = false;
-			skiKeyWasPressed = false;
+			hoverKeyWasLetGo = false;
+			hoverKeyWasPressed = false;
 
 			//Reset ceiling detector, if one is attached to this gameobject;
 			if (ceilingDetector != null)
@@ -239,7 +239,7 @@ namespace CMF
 		{
 			//Calculate (normalized) movement direction;
 			Vector3 _velocity = CalculateMovementDirection();
-			if (_velocity == Vector3.zero && isSkiing)
+			if (_velocity == Vector3.zero && isHovering)
 			{
 				float slopeDir = Mathf.Sign(mover.GetGroundNormal().x);
 				float prevDir = Mathf.Sign(savedVelocity.x);
@@ -279,14 +279,14 @@ namespace CMF
 			return characterInput.IsJumpKeyPressed();
 		}
 		
-		//Returns 'true' if the player presses the ski key;
-		protected virtual bool IsSkiKeyPressed()
+		//Returns 'true' if the player presses the hover key;
+		protected virtual bool IsHoverKeyPressed()
 		{
 			//If no character input script is attached to this object, return;
 			if(characterInput == null)
 				return false;
 
-			return characterInput.IsSkiKeyPressed();
+			return characterInput.IsHoverKeyPressed();
 		}
 
 		//Determine current controller state based on current momentum and whether the controller is grounded (or not);
@@ -421,19 +421,19 @@ namespace CMF
         }
 		
 		//Check if player is skiing;
-        void HandleSkiing()
+        void HandleHovering()
         {
-			if ((skiKeyIsPressed == true || skiKeyWasPressed))
+			if ((hoverKeyIsPressed == true || hoverKeyWasPressed))
 			{
 				groundFriction = 0;
 				slopeLimit = 0;
-				isSkiing = true;
+				isHovering = true;
 			}
 			else
 			{
 				groundFriction = originalGroundFriction;
 				slopeLimit = originalSlopeLimit;
-				isSkiing = false;
+				isHovering = false;
 			}
 		}
 
@@ -457,7 +457,9 @@ namespace CMF
 			}
 
 			//Add gravity to vertical momentum;
-			_verticalMomentum -= tr.up * gravity * Time.deltaTime;
+			if (!isHovering) {
+				_verticalMomentum -= tr.up * gravity * Time.deltaTime;
+			}
 
 			//Remove any downward force if the controller is grounded;
 			if(currentControllerState == ControllerState.Grounded && VectorMath.GetDotProduct(_verticalMomentum, tr.up) < 0f)

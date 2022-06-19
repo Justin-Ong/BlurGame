@@ -76,9 +76,19 @@ namespace CMF
             throw new System.NotImplementedException();
         }
 
-        public override bool IsSkiKeyPressed()
+        public override bool IsHoverKeyPressed()
         {
             throw new System.NotImplementedException();
         }
-    }
+
+		public override bool IsThrowableKeyPressed()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override bool IsInventoryItemKeyPressed()
+		{
+			throw new System.NotImplementedException();
+		}
+	}
 }

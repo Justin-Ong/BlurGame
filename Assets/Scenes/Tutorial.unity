@@ -731,7 +731,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 346189929525397121, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
+      propertyPath: throwablePrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 346189929525397121, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
+      propertyPath: throwablePrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 5610213502063307620, guid: c3007419df33b974cb630e540f46ff3f, type: 3}
+    - target: {fileID: 346189929525397121, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
+      propertyPath: throwablePrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 5610213502063307620, guid: c3007419df33b974cb630e540f46ff3f, type: 3}
+    - target: {fileID: 371916145217018645, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
+      propertyPath: m_Height
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371916145217018645, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
+      propertyPath: m_Center.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8042243945544599113, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: be6416d91f86ec943973a8fc31f2d8bd, type: 3}
 --- !u!1 &912601442
 GameObject:
@@ -747,7 +768,7 @@ GameObject:
   - component: {fileID: 912601445}
   - component: {fileID: 912601444}
   - component: {fileID: 912601443}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}

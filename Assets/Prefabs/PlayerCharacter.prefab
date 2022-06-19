@@ -229,7 +229,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 120
-  m_CollisionDetection: 2
+  m_CollisionDetection: 1
 --- !u!114 &385660609591209143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,11 +269,13 @@ MonoBehaviour:
   horizontalInputAxis: Horizontal
   verticalInputAxis: Vertical
   jumpKey: 32
-  skiKey: 304
+  hoverKey: 304
   shootButton: 323
   reloadKey: 114
   interactKey: 102
   flagThrowKey: 120
+  useThrowableKey: 103
+  useInventoryItemKey: 99
   useRawInput: 1
 --- !u!114 &346189929525397121
 MonoBehaviour:
@@ -287,6 +289,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c4c8002661ebb499d570d625a378d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deployablePrefabs: []
+  throwablePrefabs: []
+  activatablePrefabs: []
+  passivePrefabs: []
+  deployables: []
+  throwables: []
+  activatables: []
+  passives: []
 --- !u!114 &285323249
 MonoBehaviour:
   m_ObjectHideFlags: 0

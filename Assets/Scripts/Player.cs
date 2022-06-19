@@ -19,8 +19,11 @@ public class Player : Character
     private Flag heldFlag;
 
     private Rigidbody rb;
+    private Collider col;
 
     private string team;
+
+    private Inventory inventory;
 
     private int currWeaponIndex = 0;
     private Weapon currWeapon;
@@ -34,6 +37,8 @@ public class Player : Character
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+        inventory = GetComponent<Inventory>();
 
         weaponObjects = new GameObject[weaponPrefabs.Length];
         weapons = new Weapon[weaponPrefabs.Length];
@@ -63,6 +68,11 @@ public class Player : Character
     {
         if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)  // scroll up
         {
+            if (holdingFlag)
+            {
+                ThrowFlag();
+            }
+
             currWeaponIndex--;
             if (currWeaponIndex < 0)
             {
@@ -72,6 +82,11 @@ public class Player : Character
         }
         if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)  // scroll down
         {
+            if (holdingFlag)
+            {
+                ThrowFlag();
+            }
+
             currWeaponIndex++;
             if (currWeaponIndex >= weaponObjects.Length)
             {
@@ -79,14 +94,19 @@ public class Player : Character
             }
             UpdateCurrWeapon();
         }
-    }
-
-    private void FixedUpdate()
-    {
         if (CharacterKeyboardInput.instance.IsFlagThrowKeyPressed() && holdingFlag)
         {
             ThrowFlag();
         }
+        if (CharacterKeyboardInput.instance.IsThrowableKeyPressed())
+        {
+            UseThrowable();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+
     }
 
     private void ThrowFlag()
@@ -103,5 +123,15 @@ public class Player : Character
         }
         currWeapon = weapons[currWeaponIndex];
         currWeapon.Show();
+    }
+
+    private void UseThrowable()
+    {
+        Throwable throwable = inventory.GetThrowable();
+        if (throwable != null)
+        {
+            throwable.transform.position = weaponHoldPosition.position;
+            throwable.Throw(currWeapon.transform.forward, rb.velocity);
+        }
     }
 }

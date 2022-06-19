@@ -12,10 +12,12 @@ namespace CMF
         public abstract float GetHorizontalMovementInput();
         public abstract float GetVerticalMovementInput();
         public abstract bool IsJumpKeyPressed();
-        public abstract bool IsSkiKeyPressed();
+        public abstract bool IsHoverKeyPressed();
         public abstract bool IsShootButtonPressed();
         public abstract bool IsReloadKeyPressed();
         public abstract bool IsInteractKeyPressed();
         public abstract bool IsFlagThrowKeyPressed();
+        public abstract bool IsThrowableKeyPressed();
+        public abstract bool IsInventoryItemKeyPressed();
     }
 }

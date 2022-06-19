@@ -12,11 +12,13 @@ namespace CMF
 		public string horizontalInputAxis = "Horizontal";
 		public string verticalInputAxis = "Vertical";
 		public KeyCode jumpKey = KeyCode.Space;
-		public KeyCode skiKey = KeyCode.LeftShift;
+		public KeyCode hoverKey = KeyCode.LeftShift;
 		public KeyCode shootButton = KeyCode.Mouse0;
 		public KeyCode reloadKey = KeyCode.R;
 		public KeyCode interactKey = KeyCode.F;
-		public KeyCode flagThrowKey = KeyCode.X;
+		public KeyCode flagThrowKey = KeyCode.Z;
+		public KeyCode useThrowableKey = KeyCode.G;
+		public KeyCode useInventoryItemKey = KeyCode.C;
 
 		//If this is enabled, Unity's internal input smoothing is bypassed;
 		public bool useRawInput = true;
@@ -50,9 +52,9 @@ namespace CMF
 			return Input.GetKey(jumpKey);
 		}
 
-		public override bool IsSkiKeyPressed()
+		public override bool IsHoverKeyPressed()
 		{
-			return Input.GetKey(skiKey);
+			return Input.GetKey(hoverKey);
 		}
 
 		public override bool IsShootButtonPressed() {
@@ -70,7 +72,17 @@ namespace CMF
 
 		public override bool IsFlagThrowKeyPressed()
 		{
-			return Input.GetKey(flagThrowKey);
+			return Input.GetKeyDown(flagThrowKey);
+		}
+
+		public override bool IsThrowableKeyPressed()
+		{
+			return Input.GetKeyDown(useThrowableKey);
+		}
+
+		public override bool IsInventoryItemKeyPressed()
+		{
+			return Input.GetKeyDown(useInventoryItemKey);
 		}
     }
 }
