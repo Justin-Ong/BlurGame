@@ -5,10 +5,12 @@ using Impact.Utility.ObjectPool;
 
 public class Projectile : PooledObject
 {
-    public GameObject explosionPrefab;
+    [SerializeField]
+    private GameObject explosionPrefab;
 
-    private float lifetime;
+    [SerializeField]
     private LayerMask mask;
+    private float lifetime;
     private Rigidbody rb;
     private float damage;
 
@@ -24,6 +26,12 @@ public class Projectile : PooledObject
 
     private void OnEnable()
     {
+        StartCoroutine(lifeTimer(lifetime));
+    }
+
+    public void ForceStartTimer()
+    {
+        StopAllCoroutines();
         StartCoroutine(lifeTimer(lifetime));
     }
 

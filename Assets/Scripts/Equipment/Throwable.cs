@@ -15,23 +15,31 @@ public class Throwable : MonoBehaviour
 
     private Rigidbody rb;
     private Collider col;
+    private Projectile proj;
 
     public Collider Col => col;
 
-    private void OnEnable()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
-        GetComponent<Projectile>().Lifetime = lifetime;
+        proj = GetComponent<Projectile>();
+    }
+
+    private void OnDisable()
+    {
+        Destroy(gameObject);
     }
 
     public void Throw(Vector3 direction, Vector3 playerVelocity)
     {
-        gameObject.SetActive(true);
-        EnableRigidbody();
         transform.parent = null;
         transform.position += direction.normalized;
         rb.velocity = direction * throwForce + playerVelocity;
+        proj.Lifetime = lifetime;
+        proj.ForceStartTimer();
+        EnableRigidbody();
+        gameObject.SetActive(true);
     }
 
     protected virtual void DisableRigidbody()
